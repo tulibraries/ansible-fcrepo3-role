@@ -1,0 +1,27 @@
+ri.enabled=false
+apia.auth.required=false
+messaging.enabled=false
+database.jdbcDriverClass=com.mysql.jdbc.Driver
+upstream.auth.enabled=false
+ssl.available=false
+database.jdbcURL=jdbc\:mysql\://localhost/fedora3?useUnicode\=true&amp;characterEncoding\=UTF-8&amp;autoReconnect\=true
+database.password={{ fedora_database_password }}
+database.mysql.driver=included
+database.username={{ fedora_database_username }}
+fesl.authz.enabled=false
+tomcat.shutdown.port=8005
+deploy.local.services=false
+xacml.enabled=true
+database.mysql.jdbcDriverClass=com.mysql.jdbc.Driver
+tomcat.http.port=8080
+fedora.serverHost=localhost
+database=mysql
+database.driver=included
+fedora.serverContext=fedora
+llstore.type=akubra-fs
+tomcat.home=/usr/share/tomcat
+database.mysql.jdbcURL=jdbc\:mysql\://localhost/fedora3?useUnicode\=true&amp;characterEncoding\=UTF-8&amp;autoReconnect\=true
+fedora.home=/opt/fedora
+install.type=custom
+servlet.engine=existingTomcat
+fedora.admin.pass={{ fedora_admin_password }}

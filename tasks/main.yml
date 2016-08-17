@@ -1,0 +1,102 @@
+---
+
+- name: install fedora deps
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - curl
+    - java-1.8.0-openjdk
+    - unzip
+  become: yes
+
+- name: Determine java home
+  shell: >
+    readlink -f /usr/bin/javac | sed 's:/bin/javac::'
+  register: java_home_registered
+  changed_when: False
+
+- set_fact:
+    java_home: "{{java_home_registered.stdout}}"
+
+- name: Download Fedora installer locally
+  local_action:
+    module: get_url
+    url: http://downloads.sourceforge.net/fedora-commons/fcrepo-installer-{{fedora_version}}.jar
+    dest: downloads/fcrepo-installer-{{fedora_version}}.jar
+  become: no
+
+- name: create tomcat config and java options
+  template:
+    src: tomcat.j2
+    dest: /etc/profile.d/tomcat.sh
+  notify: restart tomcat
+
+- name: create the fedora install directory
+  file:
+    path: "{{ downloads_directory }}"
+    state: directory
+
+- name: copy Fedora installed to target
+  copy:
+    src: downloads/fcrepo-installer-{{fedora_version}}.jar
+    dest: "{{ downloads_directory }}/fcrepo-installer-{{fedora_version}}.jar"
+    owner: tomcat
+    group: tomcat
+
+- name: Copy the install properties file for automated Fedora install
+  template:
+    src: install.properties.j2
+    dest: "{{ downloads_directory }}/install.properties"
+    owner: tomcat
+    group: tomcat
+
+- name: Ensure the fedora install directory exists
+  file:
+    path: "{{ fedora_install_dir }}"
+    state: directory
+    owner: tomcat
+    group: tomcat
+
+
+- name: Check if Fedora has already been installed
+  stat:
+    path: "{{ fedora_install_dir }}/data"
+  register: fedora_installed
+  changed_when: False
+
+- name: Run the fedora automated install when it has not already been run
+  shell:
+    java -jar fcrepo-installer-{{fedora_version}}.jar install.properties
+  args:
+    chdir: "{{ downloads_directory  }}"
+  when: fedora_installed.stat.isdir is undefined
+  notify: restart tomcat
+
+- name: Make sure all fedora files are owned by tomcat
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    recurse: yes
+    owner: tomcat
+    group: tomcat
+  with_items:
+    - { state: directory,  path: "{{ fedora_install_dir }}"}
+
+- name: Template the fedora config file
+  template:
+    src: fedora.fcfg.j2
+    dest: "{{ fedora_install_dir }}/server/config/fedora.fcfg"
+    owner: tomcat
+    group: tomcat
+  notify:
+    restart tomcat
+
+- name: Make sure all fedora files are owned by tomcat
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    owner: tomcat
+    group: tomcat
+  with_items:
+    - { state: file, path:  /etc/tomcat/Catalina/localhost/fedora.xml }

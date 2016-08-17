@@ -1,0 +1,6 @@
+# A backup of the original file with addition options is at /etc/default/tomcat7.bak
+
+JAVA_HOME={{ java_home }}
+FEDORA_HOME={{ fedora_install_dir }}
+PATH="$PATH:{{ fedora_install_dir }}/client/bin"
+CATALINA_HOME={{ catalina_home | default("")}}

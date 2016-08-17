@@ -1,0 +1,18 @@
+---
+
+fedora_version: 3.8.1
+fedora_install_dir: /opt/fedora
+catalina_home: /var/lib/tomcat
+downloads_directory: /opt/downloads
+
+fedora_port: 8080
+
+fedora_admin_password: password
+
+fedora_pid_namespace: changeme
+
+fedora_oai_max_records: 500
+fedora_oai_max_headers: 500
+fedora_admin_emails: []
+fedora_repository_name: A Fedora Repository
+fedora_repository_domain: example.edu

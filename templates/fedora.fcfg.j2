@@ -129,7 +129,7 @@
     <param name="XACML-COMBINING-ALGORITHM" value="org.jboss.security.xacml.sunxacml.combine.OrderedDenyOverridesPolicyAlg"/>
     <param name="POLICY-SCHEMA-PATH" value="xsd/cs-xacml-schema-policy-01.xsd"/>
     <param name="VALIDATE-OBJECT-POLICIES-FROM-FILE" value="false"/>
-    <param name="ENFORCE-MODE" value="enforce-policies"/>
+    <param name="ENFORCE-MODE" value="{{ fedora_xacml_enforce_mode }}"/>
   </module>
   <module role="org.fcrepo.server.security.BackendSecurity" class="org.fcrepo.server.security.DefaultBackendSecurity">
     <comment>Description: Interface to the backend service security 

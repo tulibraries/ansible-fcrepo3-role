@@ -27,6 +27,9 @@ fedora_admin_password: password
 
 fedora_pid_namespace: changeme
 
+# Change if you need XACML restrictions to be applied.
+fedora_xacml_enforce_mode: permit-all-requests
+
 fedora_oai_max_records: 500
 fedora_oai_max_headers: 500
 fedora_admin_emails: []

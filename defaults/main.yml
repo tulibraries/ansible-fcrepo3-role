@@ -10,6 +10,7 @@ fedora_port: 8080
 fedora_admin_password: password
 
 fedora_pid_namespace: changeme
+fedora_xacml_enforce_mode: permit-all-requests
 
 fedora_oai_max_records: 500
 fedora_oai_max_headers: 500
